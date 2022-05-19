@@ -20,7 +20,7 @@ public class Tile {
         this.location = location;
         this.hasBomb = false;
         this.isFlagged = false;
-        this.isRevealed = false;
+        this.isRevealed = true; //TODO cheat to be changed
         this.neighbourTiles = new ArrayList<>();
     }
 
@@ -29,7 +29,9 @@ public class Tile {
     }
 
     public int getNumberOfNeighbourBombs() {
-        return 1; //TODO
+        return neighbourTiles.stream()
+                .filter(Tile::hasBomb)
+                .mapToInt(tile -> 1)
+                .sum();
     }
-
 }

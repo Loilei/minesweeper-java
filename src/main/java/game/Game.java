@@ -17,6 +17,7 @@ public class Game {
         calculateBombs();
         populateBoard();
         placeBombs();
+        board.evaluateNeighbourTiles();
     }
 
     private void placeBombs() {
