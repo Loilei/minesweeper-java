@@ -7,9 +7,10 @@ import lombok.Setter;
 @Setter
 public class Player {
     private String name;
+    private boolean isAlive;
 
-    public Player() {
+    public Player(String name) {
         this.name = name;
+        this.isAlive = true;
     }
-
 }

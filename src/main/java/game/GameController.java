@@ -10,13 +10,13 @@ public class GameController {
     private View view;
 
     public GameController() {
-        this.game = new Game();
+        this.game = new Game(5,5);
         this.boardDisplay = new BoardDisplay();
         this.view = new View();
-        this.player = new Player();
     }
 
     public void start(){
         view.printMessage("Welcome to Minesweeper!\n Wanna play a game?\n");
+        boardDisplay.printBoard(game.getBoard());
     }
 }
