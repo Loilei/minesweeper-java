@@ -10,7 +10,7 @@ public class GameController {
     private View view;
 
     public GameController() {
-        this.game = new Game(5,5);
+        this.game = new Game(10,5);
         this.boardDisplay = new BoardDisplay();
         this.view = new View();
     }
