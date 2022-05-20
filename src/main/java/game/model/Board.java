@@ -50,8 +50,8 @@ public class Board {
     public void evaluateNeighbourTiles() {
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++) {
-                Location currentLocation = new Location(i, j);
-                Tile currentTile = getTile(currentLocation);
+                final var currentLocation = new Location(i, j);
+                final var currentTile = getTile(currentLocation);
                 getTileNeighbours(currentLocation, currentTile);
             }
         }

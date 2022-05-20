@@ -7,8 +7,6 @@ import utils.InputScanner;
 import utils.ScreenMaintenance;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 public class GameController {
     private Game game;
@@ -35,9 +33,9 @@ public class GameController {
     private void runGame() {
         while (!isGameOver()) {
             printUi();
-            String chosenCoordinates = getCoordinatesFromUser();
-            Action chosenAction = getAction();
-            Tile tile = getChosenTile(chosenCoordinates);
+            final var chosenCoordinates = getCoordinatesFromUser();
+            final var chosenAction = getAction();
+            final var tile = getChosenTile(chosenCoordinates);
             playSingleRound(chosenAction, tile);
             if (hasWon()) {
                 view.printVictoryMessage();
@@ -61,8 +59,8 @@ public class GameController {
 
     private Game createMap() {
         view.printWelcomePlayerMessage(player.getName());
-        int height = inputScanner.getBoardSizeInput("Choose map height (minimum 5, maximum 10) and hit Enter: ");
-        int width = inputScanner.getBoardSizeInput("Choose map width (minimum 5, maximum 10) and hit Enter: ");
+        final var height = inputScanner.getBoardSizeInput("Choose map height (minimum 5, maximum 10) and hit Enter: ");
+        final var width = inputScanner.getBoardSizeInput("Choose map width (minimum 5, maximum 10) and hit Enter: ");
         return new Game(height, width);
     }
 
@@ -75,8 +73,8 @@ public class GameController {
 
     private void playAgain() {
         view.printMessage("Do you want to play again? [Y/N]: ");
-        List<String> options = Arrays.asList("Y", "N");
-        String playAgain = inputScanner.getLimitedInput(options);
+        final var options = Arrays.asList("Y", "N");
+        final var playAgain = inputScanner.getLimitedInput(options);
         if (playAgain.equals("Y")) {
             ScreenMaintenance.clearScreen();
             start();
@@ -112,7 +110,7 @@ public class GameController {
     }
 
     private void revealNeighbourEmptyTiles(Tile tile) {
-        List<Tile> neighbourTiles = tile.getNeighbourTiles();
+        final var neighbourTiles = tile.getNeighbourTiles();
         neighbourTiles.stream()
                 .filter(neighbour -> !neighbour.hasBomb())
                 .filter(neighbour -> neighbour.getNumberOfNeighbourBombs() == 0)
@@ -135,8 +133,8 @@ public class GameController {
     }
 
     private Tile getChosenTile(String chosenCoordinates) {
-        Map<String, Location> boardCoordinates = game.getBoard().getBoardCoordinates();
-        Location location = boardCoordinates.get(chosenCoordinates);
+        final var boardCoordinates = game.getBoard().getBoardCoordinates();
+        final var location = boardCoordinates.get(chosenCoordinates);
         return game.getBoard().getTile(location);
     }
 

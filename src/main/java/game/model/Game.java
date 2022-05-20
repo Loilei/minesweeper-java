@@ -32,8 +32,8 @@ public class Game {
     private void populateBoard() {
         for (int i = 0; i < board.getHeight(); i++) {
             for (int j = 0; j < board.getWidth(); j++) {
-                Location location = new Location(i, j);
-                Tile tile = new Tile(location);
+                final var location = new Location(i, j);
+                final var tile = new Tile(location);
                 board.getPlayArea()[i][j] = tile;
                 board.getListOfTiles().add(tile);
             }

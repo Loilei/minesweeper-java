@@ -1,7 +1,6 @@
 package game.display;
 
 import game.model.Board;
-import game.model.Tile;
 import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
@@ -34,7 +33,7 @@ public class BoardDisplay {
                 sb.append(Integer.valueOf(i + 1)).append(" ");
             }
             for (int j = 0; j < board.getWidth(); j++) {
-                Tile currentTile = board.getPlayArea()[i][j];
+                final var currentTile = board.getPlayArea()[i][j];
                 if (currentTile.isRevealed() && currentTile.hasBomb()) {
                     sb.append(leftBorder).append(bombSymbol).append(rightBorder);
                 } else if (currentTile.isRevealed() && !currentTile.hasBomb()) {
