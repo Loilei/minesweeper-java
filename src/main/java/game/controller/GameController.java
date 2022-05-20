@@ -8,6 +8,7 @@ import utils.InputScanner;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GameController {
     private Game game;
@@ -39,7 +40,7 @@ public class GameController {
         view.printMessage("Let the game begin!\n");
 
         while (!isGameOver()) {
-            view.printMessage("Number of bombs: " + game.getBombs());
+            view.printMessage("Number of bombs: " + game.getBombDisplay());
             boardDisplay.printBoard(game.getBoard());
             String chosenCoordinates = getCoordinates();
             Action chosenAction = getAction();
@@ -48,6 +49,10 @@ public class GameController {
                 executeFlagMove(tile);
             } else if (chosenAction.equals(Action.REVEAL)) {
                 executeRevealMove(tile);
+            }
+            if(hasWon()){
+                view.printMessage("Congratulations! Patron would be proud!");
+                break;
             }
         }
     }
@@ -59,6 +64,7 @@ public class GameController {
             endGame(tile);
         } else {
             tile.setRevealed(true);
+            game.getBoard().addRevealedTile();
             revealNeighbourEmptyTiles(tile);
         }
     }
@@ -72,10 +78,14 @@ public class GameController {
 
     private void revealNeighbourEmptyTiles(Tile tile) {
         List<Tile> neighbourTiles = tile.getNeighbourTiles();
-        neighbourTiles.stream()
+        List<Tile> emptyNeighbours = neighbourTiles.stream()
                 .filter(neighbour -> !neighbour.hasBomb())
                 .filter(neighbour -> neighbour.getNumberOfNeighbourBombs() == 0)
+                .collect(Collectors.toList());
+        emptyNeighbours
                 .forEach(neighbour -> neighbour.setRevealed(true));
+        emptyNeighbours
+                .forEach(neighbour -> game.getBoard().addRevealedTile());
     }
 
     private void executeFlagMove(Tile tile) {
@@ -89,9 +99,9 @@ public class GameController {
 
     private void adjustBombNumber(Tile tile) {
         if (tile.isFlagged()) {
-            game.setBombs(game.getBombs() + 1);
+            game.setBombDisplay(game.getBombDisplay() + 1);
         } else {
-            game.setBombs(game.getBombs() - 1);
+            game.setBombDisplay(game.getBombDisplay() - 1);
         }
     }
 
@@ -142,7 +152,11 @@ public class GameController {
     }
 
     private boolean isGameOver() {
-        return game.getBoard().areAllTilesRevealed() || !player.isAlive();
+        return game.areAllTilesRevealed() || !player.isAlive();
+    }
+
+    private boolean hasWon() {
+        return game.areAllTilesRevealed() && player.isAlive();
     }
 
     private boolean areCoordinatesValid(String chosenCoordinates) {

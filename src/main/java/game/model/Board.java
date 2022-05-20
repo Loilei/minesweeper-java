@@ -13,6 +13,7 @@ public class Board {
     private final int height;
     private final int width;
     private boolean areAllTilesRevealed;
+    private int revealedTiles;
     private LocationController controller;
     private final Tile[][] playArea;
     private final List<Tile> listOfTiles;
@@ -22,6 +23,7 @@ public class Board {
         this.height = height;
         this.width = width;
         this.areAllTilesRevealed = false;
+        this.revealedTiles = 0;
         this.controller = new LocationController();
         this.playArea = new Tile[this.height][this.width];
         this.listOfTiles = new ArrayList<>();
@@ -94,7 +96,7 @@ public class Board {
         }
     }
 
-    public boolean areAllTilesRevealed() {
-        return areAllTilesRevealed;
+    public void addRevealedTile() {
+        this.revealedTiles++;
     }
 }

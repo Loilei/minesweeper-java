@@ -12,6 +12,8 @@ public class Game {
     private Board board;
     private int bombs;
     private final double bombDensity = 0.2;
+    private int bombDisplay;
+
 
     public Game(int height, int width) {
         createBoard(height, width);
@@ -47,6 +49,10 @@ public class Game {
 
     private int calculateBombs() {
         return (int) (board.getHeight() * board.getWidth() * bombDensity);
+    }
+
+    public boolean areAllTilesRevealed() {
+        return board.getListOfTiles().size() - board.getRevealedTiles() - bombs == 0;
     }
 
     private void createBoard(int height, int width) {
