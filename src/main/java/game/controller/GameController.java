@@ -26,13 +26,10 @@ public class GameController {
         view.printMessage("Welcome to Minesweeper!\n Wanna play a game?\n");
         view.printMessage("Please type your name: ");
         this.player = new Player();
-//        player.setName(inputScanner.getStringInput());
-        player.setName("owca");
+        player.setName(inputScanner.getStringInput());
         view.printMessage("\nHello " + player.getName() + ", please choose your map size ");
-//        int height = inputScanner.getBoardSizeInput("Choose map height (minimum 5, maximum 10) and hit Enter: ");
-//        int width = inputScanner.getBoardSizeInput("Choose map width (minimum 5, maximum 10) and hit Enter: ");
-        int height = 10;
-        int width = 10;
+        int height = inputScanner.getBoardSizeInput("Choose map height (minimum 5, maximum 10) and hit Enter: ");
+        int width = inputScanner.getBoardSizeInput("Choose map width (minimum 5, maximum 10) and hit Enter: ");
 
         this.game = new Game(height, width);
 
@@ -54,6 +51,22 @@ public class GameController {
                 break;
             }
         }
+        playAgain();
+    }
+
+    private void playAgain() {
+        view.printMessage("Do you want to play again? [Y/N]: ");
+        List<String> options = Arrays.asList("Y", "N");
+        String playAgain = inputScanner.getLimitedInput(options);
+        if (playAgain.equals("Y")) {
+            start();
+        } else {
+            quitGame();
+        }
+    }
+
+    private void quitGame() {
+        System.exit(0);
     }
 
     private void executeRevealMove(Tile tile) {

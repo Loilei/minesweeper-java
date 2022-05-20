@@ -1,6 +1,7 @@
 package utils;
 
 
+import java.util.List;
 import java.util.Scanner;
 
 public class InputScanner {
@@ -30,5 +31,16 @@ public class InputScanner {
         while (number > 10 || number < 5);
         scanner.nextLine();
         return number;
+    }
+
+    public String getLimitedInput(List<String> options) {
+        String userInput = "";
+        do {
+            userInput = scanner.nextLine().toUpperCase();
+            if (!options.contains(userInput)) {
+                System.out.println("Please provide a valid input");
+            }
+        } while (!options.contains(userInput));
+        return userInput;
     }
 }
