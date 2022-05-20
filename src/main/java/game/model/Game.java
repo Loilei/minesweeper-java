@@ -11,6 +11,7 @@ import java.util.List;
 public class Game {
     private Board board;
     private int bombs;
+    private final double bombDensity = 0.2;
 
     public Game(int height, int width) {
         createBoard(height, width);
@@ -44,7 +45,6 @@ public class Game {
     }
 
     private void calculateBombs() {
-        double bombDensity = 0.3;
         this.bombs = (int) (board.getHeight() * board.getWidth() * bombDensity);
     }
 

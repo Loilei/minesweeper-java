@@ -6,6 +6,7 @@ import game.model.*;
 import utils.InputScanner;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class GameController {
@@ -30,8 +31,8 @@ public class GameController {
         view.printMessage("\nHello " + player.getName() + ", please choose your map size ");
 //        int height = inputScanner.getBoardSizeInput("Choose map height (minimum 5, maximum 10) and hit Enter: ");
 //        int width = inputScanner.getBoardSizeInput("Choose map width (minimum 5, maximum 10) and hit Enter: ");
-        int height = 6;
-        int width = 6;
+        int height = 10;
+        int width = 10;
 
         this.game = new Game(height, width);
 
@@ -42,21 +43,38 @@ public class GameController {
             String chosenCoordinates = getCoordinates();
             Action chosenAction = getAction();
             Tile tile = getChosenTile(chosenCoordinates);
-            if(chosenAction.equals(Action.FLAG)) {
+            if (chosenAction.equals(Action.FLAG)) {
                 executeFlagMove(tile);
             } else if (chosenAction.equals(Action.REVEAL)) {
-                if (tile.isRevealed()) {
-                    view.printMessage("Tile already revealed. Choose another coordinates");
-                } else if (tile.hasBomb()) {
-                    player.setAlive(false);
-                    tile.setRevealed(true);
-                    view.printMessage("YOU DIED!\n");
-                    boardDisplay.printBoard(game.getBoard());
-                } else {
-                    tile.setRevealed(true);
-                }
+                executeRevealMove(tile);
             }
         }
+    }
+
+    private void executeRevealMove(Tile tile) {
+        if (tile.isRevealed()) {
+            view.printMessage("Tile already revealed. Choose another coordinates");
+        } else if (tile.hasBomb()) {
+            endGame(tile);
+        } else {
+            tile.setRevealed(true);
+            revealNeighbourEmptyTiles(tile);
+        }
+    }
+
+    private void endGame(Tile tile) {
+        player.setAlive(false);
+        tile.setRevealed(true);
+        view.printMessage("YOU DIED!\n");
+        boardDisplay.printBoard(game.getBoard());
+    }
+
+    private void revealNeighbourEmptyTiles(Tile tile) {
+        List<Tile> neighbourTiles = tile.getNeighbourTiles();
+        neighbourTiles.stream()
+                .filter(neighbour -> !neighbour.hasBomb())
+                .filter(neighbour -> neighbour.getNumberOfNeighbourBombs() == 0)
+                .forEach(neighbour -> neighbour.setRevealed(true));
     }
 
     private void executeFlagMove(Tile tile) {
@@ -120,6 +138,4 @@ public class GameController {
     private boolean areCoordinatesValid(String chosenCoordinates) {
         return game.getBoard().getBoardCoordinates().containsKey(chosenCoordinates);
     }
-
-
 }
