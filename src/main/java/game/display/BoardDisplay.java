@@ -2,10 +2,12 @@ package game.display;
 
 import game.model.Board;
 import game.model.Tile;
+import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
 
+@NoArgsConstructor
 public class BoardDisplay {
     private final char leftBorder = '[';
     private final char rightBorder = ']';
@@ -13,7 +15,8 @@ public class BoardDisplay {
     private final char bombSymbol = 'X';
     private final char flagSymbol = 'F';
 
-    private final List<Character> alphabet = Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+    private final List<Character> alphabet = Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+            'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
     public void printBoard(Board board) {
         final var sb = new StringBuilder();

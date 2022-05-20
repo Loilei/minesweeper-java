@@ -4,6 +4,7 @@ import game.display.BoardDisplay;
 import game.display.View;
 import game.model.*;
 import utils.InputScanner;
+import utils.ScreenMaintenance;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,46 +13,64 @@ import java.util.Map;
 public class GameController {
     private Game game;
     private Player player;
-    private BoardDisplay boardDisplay;
-    private View view;
-    private InputScanner inputScanner;
+    private final View view;
+    private final BoardDisplay boardDisplay;
+    private final InputScanner inputScanner;
 
     public GameController() {
-        this.boardDisplay = new BoardDisplay();
         this.view = new View();
+        this.boardDisplay = new BoardDisplay();
         this.inputScanner = new InputScanner();
     }
 
     public void start() {
-        view.printMessage("Welcome to Minesweeper!\n Wanna play a game?\n");
-        view.printMessage("Please type your name: ");
-        this.player = new Player();
-        player.setName(inputScanner.getStringInput());
-        view.printMessage("\nHello " + player.getName() + ", please choose your map size ");
-        int height = inputScanner.getBoardSizeInput("Choose map height (minimum 5, maximum 10) and hit Enter: ");
-        int width = inputScanner.getBoardSizeInput("Choose map width (minimum 5, maximum 10) and hit Enter: ");
-
-        this.game = new Game(height, width);
-
+        view.printWelcomeMessage();
+        this.player = createPlayer();
+        this.game = createMap();
         view.printMessage("Let the game begin!\n");
+        runGame();
+        playAgain();
+    }
 
+    private void runGame() {
         while (!isGameOver()) {
-            view.printMessage("Number of bombs: " + game.getBombDisplay());
-            boardDisplay.printBoard(game.getBoard());
-            String chosenCoordinates = getCoordinates();
+            printUi();
+            String chosenCoordinates = getCoordinatesFromUser();
             Action chosenAction = getAction();
             Tile tile = getChosenTile(chosenCoordinates);
-            if (chosenAction.equals(Action.FLAG)) {
-                executeFlagMove(tile);
-            } else if (chosenAction.equals(Action.REVEAL)) {
-                executeRevealMove(tile);
-            }
+            playSingleRound(chosenAction, tile);
             if (hasWon()) {
-                view.printMessage("Congratulations! Patron would be proud!");
+                view.printVictoryMessage();
                 break;
             }
         }
-        playAgain();
+    }
+
+    private void playSingleRound(Action chosenAction, Tile tile) {
+        if (chosenAction.equals(Action.FLAG)) {
+            executeFlagMove(tile);
+        } else if (chosenAction.equals(Action.REVEAL)) {
+            executeRevealMove(tile);
+        }
+    }
+
+    private void printUi() {
+        view.printBombsLeft(game.getBombDisplay());
+        boardDisplay.printBoard(game.getBoard());
+    }
+
+    private Game createMap() {
+        view.printWelcomePlayerMessage(player.getName());
+        int height = inputScanner.getBoardSizeInput("Choose map height (minimum 5, maximum 10) and hit Enter: ");
+        int width = inputScanner.getBoardSizeInput("Choose map width (minimum 5, maximum 10) and hit Enter: ");
+        return new Game(height, width);
+    }
+
+    private Player createPlayer() {
+        view.printMessage("Please type your name: ");
+        final var player = new Player();
+        player.setName(inputScanner.getStringInput());
+        return player;
     }
 
     private void playAgain() {
@@ -59,14 +78,11 @@ public class GameController {
         List<String> options = Arrays.asList("Y", "N");
         String playAgain = inputScanner.getLimitedInput(options);
         if (playAgain.equals("Y")) {
+            ScreenMaintenance.clearScreen();
             start();
         } else {
-            quitGame();
+            ScreenMaintenance.quitGame();
         }
-    }
-
-    private void quitGame() {
-        System.exit(0);
     }
 
     private void executeRevealMove(Tile tile) {
@@ -147,7 +163,7 @@ public class GameController {
         return validActions.contains(action);
     }
 
-    private String getCoordinates() {
+    private String getCoordinatesFromUser() {
         String chosenCoordinates = "";
         view.printMessage("\nChoose a coordinates of a tile to reveal it or place a flag (example: B3): ");
         do {

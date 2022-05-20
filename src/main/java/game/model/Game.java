@@ -14,11 +14,30 @@ public class Game {
     private final double bombDensity = 0.2;
 
     public Game(int height, int width) {
-        createBoard(height, width);
+        this.board = createBoard(height, width);
         this.bombs = calculateBombs();
         populateBoard();
         placeBombs();
         board.evaluateNeighbourTiles();
+    }
+
+    private Board createBoard(int height, int width) {
+        return new Board(height, width);
+    }
+
+    private int calculateBombs() {
+        return (int) (board.getHeight() * board.getWidth() * bombDensity);
+    }
+
+    private void populateBoard() {
+        for (int i = 0; i < board.getHeight(); i++) {
+            for (int j = 0; j < board.getWidth(); j++) {
+                Location location = new Location(i, j);
+                Tile tile = new Tile(location);
+                board.getPlayArea()[i][j] = tile;
+                board.getListOfTiles().add(tile);
+            }
+        }
     }
 
     private void placeBombs() {
@@ -34,27 +53,8 @@ public class Game {
         }
     }
 
-    private void populateBoard() {
-        for (int i = 0; i < board.getHeight(); i++) {
-            for (int j = 0; j < board.getWidth(); j++) {
-                Location location = new Location(i, j);
-                Tile tile = new Tile(location);
-                board.getPlayArea()[i][j] = tile;
-                board.getListOfTiles().add(tile);
-            }
-        }
-    }
-
-    private int calculateBombs() {
-        return (int) (board.getHeight() * board.getWidth() * bombDensity);
-    }
-
     public boolean areAllTilesRevealed() {
         return board.getListOfTiles().size() - board.getRevealedTiles() - bombs == 0;
-    }
-
-    private void createBoard(int height, int width) {
-        this.board = new Board(height, width);
     }
 
     public void resetBoard() {

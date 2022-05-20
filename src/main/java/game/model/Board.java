@@ -13,7 +13,7 @@ public class Board {
     private final int height;
     private final int width;
     private int revealedTiles;
-    private LocationController controller;
+    private final LocationController locationController;
     private final Tile[][] playArea;
     private final List<Tile> listOfTiles;
     private final Map<String, Location> boardCoordinates;
@@ -22,7 +22,7 @@ public class Board {
         this.height = height;
         this.width = width;
         this.revealedTiles = 0;
-        this.controller = new LocationController();
+        this.locationController = new LocationController();
         this.playArea = new Tile[this.height][this.width];
         this.listOfTiles = new ArrayList<>();
         this.boardCoordinates = populateBoardCoordinates();
@@ -34,7 +34,6 @@ public class Board {
         for (int i = 0; i < height; i++) {
             digits[i] = i;
         }
-
         HashMap<String, Location> coordinates = new HashMap<>();
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -61,35 +60,35 @@ public class Board {
     private void getTileNeighbours(Location currentLocation, Tile currentTile) {
         final var neighbourTiles = currentTile.getNeighbourTiles();
         try {
-            neighbourTiles.add(getTile(controller.getNorthLocation(currentLocation)));
+            neighbourTiles.add(getTile(locationController.getNorthLocation(currentLocation)));
         } catch (Exception ignored) {
         }
         try {
-            neighbourTiles.add(getTile(controller.getNorthEastLocation(currentLocation)));
+            neighbourTiles.add(getTile(locationController.getNorthEastLocation(currentLocation)));
         } catch (Exception ignored) {
         }
         try {
-            neighbourTiles.add(getTile(controller.getEastLocation(currentLocation)));
+            neighbourTiles.add(getTile(locationController.getEastLocation(currentLocation)));
         } catch (Exception ignored) {
         }
         try {
-            neighbourTiles.add(getTile(controller.getSouthEastLocation(currentLocation)));
+            neighbourTiles.add(getTile(locationController.getSouthEastLocation(currentLocation)));
         } catch (Exception ignored) {
         }
         try {
-            neighbourTiles.add(getTile(controller.getSouthLocation(currentLocation)));
+            neighbourTiles.add(getTile(locationController.getSouthLocation(currentLocation)));
         } catch (Exception ignored) {
         }
         try {
-            neighbourTiles.add(getTile(controller.getSouthWestLocation(currentLocation)));
+            neighbourTiles.add(getTile(locationController.getSouthWestLocation(currentLocation)));
         } catch (Exception ignored) {
         }
         try {
-            neighbourTiles.add(getTile(controller.getWestLocation(currentLocation)));
+            neighbourTiles.add(getTile(locationController.getWestLocation(currentLocation)));
         } catch (Exception ignored) {
         }
         try {
-            neighbourTiles.add(getTile(controller.getNorthWestLocation(currentLocation)));
+            neighbourTiles.add(getTile(locationController.getNorthWestLocation(currentLocation)));
         } catch (Exception ignored) {
         }
     }
