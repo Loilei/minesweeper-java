@@ -1,6 +1,5 @@
 package utils;
 
-import lombok.NoArgsConstructor;
 
 import java.util.Scanner;
 

@@ -39,6 +39,7 @@ public class GameController {
         view.printMessage("Let the game begin!\n");
 
         while (!isGameOver()) {
+            view.printMessage("Number of bombs: " + game.getBombs());
             boardDisplay.printBoard(game.getBoard());
             String chosenCoordinates = getCoordinates();
             Action chosenAction = getAction();
@@ -81,7 +82,16 @@ public class GameController {
         if (tile.isRevealed()) {
             view.printMessage("Tile already revealed. Choose another coordinates");
         } else {
+            adjustBombNumber(tile);
             toggleFlagged(tile);
+        }
+    }
+
+    private void adjustBombNumber(Tile tile) {
+        if (tile.isFlagged()) {
+            game.setBombs(game.getBombs() + 1);
+        } else {
+            game.setBombs(game.getBombs() - 1);
         }
     }
 

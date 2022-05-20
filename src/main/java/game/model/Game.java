@@ -15,7 +15,7 @@ public class Game {
 
     public Game(int height, int width) {
         createBoard(height, width);
-        calculateBombs();
+        this.bombs = calculateBombs();
         populateBoard();
         placeBombs();
         board.evaluateNeighbourTiles();
@@ -23,12 +23,13 @@ public class Game {
 
     private void placeBombs() {
         List<Tile> listOfTiles = board.getListOfTiles();
-        while (bombs > 0) {
+        int bombsLeft = this.bombs;
+        while (bombsLeft > 0) {
             int randomTileIndex = Randomizer.getRandomNumberFromRange(0, listOfTiles.size() - 1);
             Tile selectedTile = listOfTiles.get(randomTileIndex);
             if (!selectedTile.hasBomb()) {
                 selectedTile.setHasBomb(true);
-                bombs--;
+                bombsLeft--;
             }
         }
     }
@@ -44,8 +45,8 @@ public class Game {
         }
     }
 
-    private void calculateBombs() {
-        this.bombs = (int) (board.getHeight() * board.getWidth() * bombDensity);
+    private int calculateBombs() {
+        return (int) (board.getHeight() * board.getWidth() * bombDensity);
     }
 
     private void createBoard(int height, int width) {
