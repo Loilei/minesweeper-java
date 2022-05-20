@@ -12,8 +12,6 @@ public class Game {
     private Board board;
     private int bombs;
     private final double bombDensity = 0.2;
-    private int bombDisplay;
-
 
     public Game(int height, int width) {
         createBoard(height, width);
@@ -57,5 +55,22 @@ public class Game {
 
     private void createBoard(int height, int width) {
         this.board = new Board(height, width);
+    }
+
+    public void resetBoard() {
+        getBoard().getListOfTiles()
+                .forEach(tile -> {
+                    tile.setRevealed(false);
+                    tile.setFlagged(false);
+                });
+    }
+
+    public int getBombDisplay() {
+        int markedBombs = getBoard().getListOfTiles()
+                .stream()
+                .filter(Tile::isFlagged)
+                .mapToInt(tile -> 1)
+                .sum();
+        return bombs - markedBombs;
     }
 }

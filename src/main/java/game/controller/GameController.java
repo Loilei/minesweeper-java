@@ -8,7 +8,6 @@ import utils.InputScanner;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class GameController {
     private Game game;
@@ -50,7 +49,7 @@ public class GameController {
             } else if (chosenAction.equals(Action.REVEAL)) {
                 executeRevealMove(tile);
             }
-            if(hasWon()){
+            if (hasWon()) {
                 view.printMessage("Congratulations! Patron would be proud!");
                 break;
             }
@@ -62,11 +61,18 @@ public class GameController {
             view.printMessage("Tile already revealed. Choose another coordinates");
         } else if (tile.hasBomb()) {
             endGame(tile);
+            restartGame();
         } else {
             tile.setRevealed(true);
             game.getBoard().addRevealedTile();
             revealNeighbourEmptyTiles(tile);
         }
+    }
+
+    private void restartGame() {
+        view.printMessage("\nYou have died " + player.getName() + ". Your game has been restarted with same bomb placement.\n");
+        game.resetBoard();
+        player.setAlive(true);
     }
 
     private void endGame(Tile tile) {
@@ -78,30 +84,20 @@ public class GameController {
 
     private void revealNeighbourEmptyTiles(Tile tile) {
         List<Tile> neighbourTiles = tile.getNeighbourTiles();
-        List<Tile> emptyNeighbours = neighbourTiles.stream()
+        neighbourTiles.stream()
                 .filter(neighbour -> !neighbour.hasBomb())
                 .filter(neighbour -> neighbour.getNumberOfNeighbourBombs() == 0)
-                .collect(Collectors.toList());
-        emptyNeighbours
-                .forEach(neighbour -> neighbour.setRevealed(true));
-        emptyNeighbours
-                .forEach(neighbour -> game.getBoard().addRevealedTile());
+                .forEach(neighbour -> {
+                    neighbour.setRevealed(true);
+                    game.getBoard().addRevealedTile();
+                });
     }
 
     private void executeFlagMove(Tile tile) {
         if (tile.isRevealed()) {
             view.printMessage("Tile already revealed. Choose another coordinates");
         } else {
-            adjustBombNumber(tile);
             toggleFlagged(tile);
-        }
-    }
-
-    private void adjustBombNumber(Tile tile) {
-        if (tile.isFlagged()) {
-            game.setBombDisplay(game.getBombDisplay() + 1);
-        } else {
-            game.setBombDisplay(game.getBombDisplay() - 1);
         }
     }
 

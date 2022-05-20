@@ -12,7 +12,6 @@ import java.util.Map;
 public class Board {
     private final int height;
     private final int width;
-    private boolean areAllTilesRevealed;
     private int revealedTiles;
     private LocationController controller;
     private final Tile[][] playArea;
@@ -22,7 +21,6 @@ public class Board {
     public Board(int height, int width) {
         this.height = height;
         this.width = width;
-        this.areAllTilesRevealed = false;
         this.revealedTiles = 0;
         this.controller = new LocationController();
         this.playArea = new Tile[this.height][this.width];
