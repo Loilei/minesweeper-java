@@ -1,5 +1,6 @@
-package game;
+package game.controller;
 
+import game.model.Location;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

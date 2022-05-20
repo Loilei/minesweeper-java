@@ -1,4 +1,4 @@
-package game;
+package utils;
 
 import lombok.NoArgsConstructor;
 
@@ -32,5 +32,4 @@ public class InputScanner {
         scanner.nextLine();
         return number;
     }
-
 }

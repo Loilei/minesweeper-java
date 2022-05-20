@@ -1,4 +1,4 @@
-package game;
+package game.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -50,7 +50,5 @@ public class Game {
 
     private void createBoard(int height, int width) {
         this.board = new Board(height, width);
-
-
     }
 }

@@ -1,7 +1,7 @@
-package display;
+package game.display;
 
-import game.Board;
-import game.Tile;
+import game.model.Board;
+import game.model.Tile;
 
 import java.util.Arrays;
 import java.util.List;

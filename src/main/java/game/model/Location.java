@@ -1,4 +1,4 @@
-package game;
+package game.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,5 +8,4 @@ import lombok.Data;
 public class Location {
     private int x;
     private int y;
-
 }

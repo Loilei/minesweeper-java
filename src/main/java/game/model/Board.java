@@ -1,5 +1,6 @@
-package game;
+package game.model;
 
+import game.controller.LocationController;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -25,7 +26,6 @@ public class Board {
         this.playArea = new Tile[this.height][this.width];
         this.listOfTiles = new ArrayList<>();
         this.boardCoordinates = populateBoardCoordinates();
-        System.out.println(boardCoordinates);
     }
 
     private Map<String, Location> populateBoardCoordinates() {
@@ -38,7 +38,7 @@ public class Board {
         HashMap<String, Location> coordinates = new HashMap<>();
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                coordinates.put(alphabet[j] + String.valueOf(digits[i] + 1), new Location(j, i));
+                coordinates.put(alphabet[j] + String.valueOf(digits[i] + 1), new Location(i, j));
             }
         }
         return coordinates;

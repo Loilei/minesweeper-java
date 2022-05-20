@@ -1,4 +1,4 @@
-package game;
+package game.model;
 
 
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class Tile {
         this.location = location;
         this.hasBomb = false;
         this.isFlagged = false;
-        this.isRevealed = true; //TODO cheat to be changed
+        this.isRevealed = false;
         this.neighbourTiles = new ArrayList<>();
     }
 

@@ -1,10 +1,12 @@
-package game;
+package game.controller;
 
-import display.BoardDisplay;
-import display.View;
+import game.display.BoardDisplay;
+import game.display.View;
+import game.model.*;
+import utils.InputScanner;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 
 public class GameController {
     private Game game;
@@ -23,24 +25,59 @@ public class GameController {
         view.printMessage("Welcome to Minesweeper!\n Wanna play a game?\n");
         view.printMessage("Please type your name: ");
         this.player = new Player();
-        player.setName(inputScanner.getStringInput());
+//        player.setName(inputScanner.getStringInput());
+        player.setName("owca");
         view.printMessage("\nHello " + player.getName() + ", please choose your map size ");
-        int height = inputScanner.getBoardSizeInput("Choose map height (minimum 5, maximum 10) and hit Enter: ");
-        int width = inputScanner.getBoardSizeInput("Choose map width (minimum 5, maximum 10) and hit Enter: ");
+//        int height = inputScanner.getBoardSizeInput("Choose map height (minimum 5, maximum 10) and hit Enter: ");
+//        int width = inputScanner.getBoardSizeInput("Choose map width (minimum 5, maximum 10) and hit Enter: ");
+        int height = 6;
+        int width = 6;
 
         this.game = new Game(height, width);
 
         view.printMessage("Let the game begin!\n");
-        boardDisplay.printBoard(game.getBoard());
 
         while (!isGameOver()) {
+            boardDisplay.printBoard(game.getBoard());
             String chosenCoordinates = getCoordinates();
-            String chosenAction = getAction();
-            //TODO reveal tile logic
+            Action chosenAction = getAction();
+            Tile tile = getChosenTile(chosenCoordinates);
+            if(chosenAction.equals(Action.FLAG)) {
+                executeFlagMove(tile);
+            } else if (chosenAction.equals(Action.REVEAL)) {
+                if (tile.isRevealed()) {
+                    view.printMessage("Tile already revealed. Choose another coordinates");
+                } else if (tile.hasBomb()) {
+                    player.setAlive(false);
+                    tile.setRevealed(true);
+                    view.printMessage("YOU DIED!\n");
+                    boardDisplay.printBoard(game.getBoard());
+                } else {
+                    tile.setRevealed(true);
+                }
+            }
         }
     }
 
-    private String getAction() {
+    private void executeFlagMove(Tile tile) {
+        if (tile.isRevealed()) {
+            view.printMessage("Tile already revealed. Choose another coordinates");
+        } else {
+            toggleFlagged(tile);
+        }
+    }
+
+    private void toggleFlagged(Tile tile) {
+        tile.setFlagged(!tile.isFlagged());
+    }
+
+    private Tile getChosenTile(String chosenCoordinates) {
+        Map<String, Location> boardCoordinates = game.getBoard().getBoardCoordinates();
+        Location location = boardCoordinates.get(chosenCoordinates);
+        return game.getBoard().getTile(location);
+    }
+
+    private Action getAction() {
         String action = "";
         view.printMessage("\nPress R to reveal the tile. Press F to place or remove a flag.");
         do {
@@ -49,7 +86,13 @@ public class GameController {
                 view.printMessage("Action is not valid. Choose a valid action [R/F]: ");
             }
         } while (!isActionValid(action));
-        return action;
+
+        if (action.equals("R")) {
+            return Action.REVEAL;
+        } else if (action.equals("F")) {
+            return Action.FLAG;
+        }
+        throw new IllegalArgumentException("Unknown action " + action);
     }
 
     private boolean isActionValid(String action) {
