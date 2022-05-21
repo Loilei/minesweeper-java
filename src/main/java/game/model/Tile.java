@@ -1,12 +1,11 @@
 package game.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class Tile {
     private Location location;
     private boolean hasBomb;
