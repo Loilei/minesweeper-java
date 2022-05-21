@@ -39,7 +39,7 @@ class ViewTest {
     @Test
     void whenWelcomeMessagePrintIsCalled_displayTheMessage() {
         //GIVEN
-        var expectedMessage = "Welcome to Minesweeper!\n Wanna play a com.marcela.game?\n";
+        var expectedMessage = "Welcome to Minesweeper!\n Wanna play a game?\n";
         //WHEN
         view.printMessage(expectedMessage);
         //THEN

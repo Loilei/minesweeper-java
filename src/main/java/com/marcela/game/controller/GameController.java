@@ -22,9 +22,9 @@ public class GameController {
 
     public void start() {
         view.printWelcomeMessage();
-        setPlayersName();
         this.game = createMap();
-        view.printMessage("Let the com.marcela.game begin!\n");
+        setPlayersName();
+        view.printMessage("Let the game begin!\n");
         runGame();
         playAgain();
     }
@@ -57,7 +57,6 @@ public class GameController {
     }
 
     private Game createMap() {
-        view.printWelcomePlayerMessage(game.getPlayer().getName());
         final var height = inputScanner.getBoardSizeInput("Choose map height (minimum 5, maximum 10) and hit Enter: ");
         final var width = inputScanner.getBoardSizeInput("Choose map width (minimum 5, maximum 10) and hit Enter: ");
         return new Game(height, width);
@@ -66,6 +65,7 @@ public class GameController {
     private void setPlayersName() {
         view.printMessage("Please type your name: ");
         game.getPlayer().setName(inputScanner.getStringInput());
+        view.printWelcomePlayerMessage(game.getPlayer().getName());
     }
 
     private void playAgain() {
@@ -94,7 +94,7 @@ public class GameController {
     }
 
     private void restartGame() {
-        view.printMessage("\nYou have died " + game.getPlayer().getName() + ". Your com.marcela.game has been restarted with same bomb placement.\n");
+        view.printMessage("\nYou have died " + game.getPlayer().getName() + ". Your game has been restarted with same bomb placement.\n");
         game.resetBoard();
         game.resurrectPlayer();
     }

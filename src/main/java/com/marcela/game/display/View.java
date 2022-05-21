@@ -7,7 +7,7 @@ public class View {
     }
 
     public void printWelcomeMessage() {
-        printMessage("Welcome to Minesweeper!\n Wanna play a com.marcela.game?\n");
+        printMessage("Welcome to Minesweeper!\n Wanna play a game?\n");
     }
 
     public void printWelcomePlayerMessage(String playerName){
