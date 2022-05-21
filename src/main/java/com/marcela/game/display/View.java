@@ -11,7 +11,7 @@ public class View {
     }
 
     public void printWelcomePlayerMessage(String playerName){
-        printMessage("\nHello " + playerName + ", please choose your map size ");
+        printMessage("\nHello " + playerName);
     }
 
     public void printBombsLeft(int numberOfBombs) {

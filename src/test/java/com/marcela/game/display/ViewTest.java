@@ -51,7 +51,7 @@ class ViewTest {
         //GIVEN
         var player = new Player();
         player.setName("Alice");
-        var expectedMessage = "\nHello " + player.getName() + ", please choose your map size ";
+        var expectedMessage = "\nHello " + player.getName();
         //WHEN
         view.printMessage(expectedMessage);
         //THEN

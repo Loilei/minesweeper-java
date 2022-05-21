@@ -44,7 +44,7 @@ public class Board {
     }
 
     public Tile getTile(Location location) {
-        return playArea[location.getX()][location.getY()];
+        return playArea[location.x()][location.y()];
     }
 
     public void evaluateNeighbourTiles() {
