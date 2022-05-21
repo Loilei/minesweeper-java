@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import com.marcela.utils.Randomizer;
 
-import java.util.List;
-
 @Getter
 @Setter
 public class Game {
@@ -69,7 +67,7 @@ public class Game {
     }
 
     private void placeBombs() {
-        List<Tile> listOfTiles = board.getListOfTiles();
+        final var listOfTiles = board.getListOfTiles();
         int bombsLeft = this.bombs;
         while (bombsLeft > 0) {
             int randomTileIndex = Randomizer.getRandomNumberFromRange(0, listOfTiles.size() - 1);
@@ -94,7 +92,7 @@ public class Game {
     }
 
     public int getBombDisplay() {
-        int markedBombs = getBoard().getListOfTiles()
+        final var markedBombs = getBoard().getListOfTiles()
                 .stream()
                 .filter(Tile::isFlagged)
                 .mapToInt(tile -> 1)

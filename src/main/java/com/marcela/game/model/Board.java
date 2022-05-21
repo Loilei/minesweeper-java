@@ -30,9 +30,9 @@ public class Board {
         if (getTile(location).isRevealed()){
             throw new IllegalArgumentException("Tile already revealed. Choose another coordinates.");
         }
-        Tile tile = getTile(location);
+        final var tile = getTile(location);
         int surroundingBombs = tile.getNumberOfNeighbourBombs();
-        RevealResult revealResult = tile.hasBomb() ? new RevealResult(RevealStatus.EXPLODED, surroundingBombs) : new RevealResult(RevealStatus.OK, surroundingBombs);
+        final var revealResult = tile.hasBomb() ? new RevealResult(RevealStatus.EXPLODED, surroundingBombs) : new RevealResult(RevealStatus.OK, surroundingBombs);
 
         return revealResult;
     }

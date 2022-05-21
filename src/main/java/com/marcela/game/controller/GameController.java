@@ -23,11 +23,6 @@ public class GameController {
         this.boardDisplay = new BoardDisplay();
         this.inputScanner = new InputScanner();
     }
-    public GameController(InputScanner inputScanner) {
-        this.view = new View();
-        this.boardDisplay = new BoardDisplay();
-        this.inputScanner = inputScanner;
-    }
 
     public void start() {
         view.printWelcomeMessage();
