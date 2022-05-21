@@ -28,6 +28,42 @@ public class Board {
         this.boardCoordinates = populateBoardCoordinates();
     }
 
+    public RevealResult revealTile(Location location) {
+        if (getTile(location).isRevealed()){
+            throw new IllegalArgumentException("Tile already revealed. Choose another coordinates.");
+        }
+        Tile tile = getTile(location);
+        int surroundingBombs = tile.getNumberOfNeighbourBombs();
+        RevealResult revealResult = tile.hasBomb() ? new RevealResult(RevealStatus.EXPLODED, surroundingBombs) : new RevealResult(RevealStatus.OK, surroundingBombs);
+
+        return revealResult;
+    }
+
+    public Tile getFlaggedTile(Location location) {
+        if (getTile(location).isRevealed()){
+            throw new IllegalArgumentException("Tile already revealed. Choose another coordinates.");
+        }
+        return getTile(location);
+    }
+
+    public Tile getTile(Location location) {
+        return playArea[location.x()][location.y()];
+    }
+
+    public void addRevealedTile() {
+        this.revealedTiles++;
+    }
+
+    public void evaluateNeighbourTiles() {
+        for (int i = 0; i < this.height; i++) {
+            for (int j = 0; j < this.width; j++) {
+                final var currentLocation = new Location(i, j);
+                final var currentTile = getTile(currentLocation);
+                getTileNeighbours(currentLocation, currentTile);
+            }
+        }
+    }
+
     private Map<String, Location> populateBoardCoordinates() {
         final var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
         final var digits = new int[this.height];
@@ -41,20 +77,6 @@ public class Board {
             }
         }
         return coordinates;
-    }
-
-    public Tile getTile(Location location) {
-        return playArea[location.x()][location.y()];
-    }
-
-    public void evaluateNeighbourTiles() {
-        for (int i = 0; i < this.height; i++) {
-            for (int j = 0; j < this.width; j++) {
-                final var currentLocation = new Location(i, j);
-                final var currentTile = getTile(currentLocation);
-                getTileNeighbours(currentLocation, currentTile);
-            }
-        }
     }
 
     private void getTileNeighbours(Location currentLocation, Tile currentTile) {
@@ -91,9 +113,5 @@ public class Board {
             neighbourTiles.add(getTile(locationController.getNorthWestLocation(currentLocation)));
         } catch (Exception ignored) {
         }
-    }
-
-    public void addRevealedTile() {
-        this.revealedTiles++;
     }
 }

@@ -33,9 +33,9 @@ public class GameController {
         while (!isGameOver()) {
             printUi();
             final var chosenCoordinates = getCoordinatesFromUser();
-            final var chosenAction = getAction();
-            final var tile = getChosenTile(chosenCoordinates);
-            playSingleRound(chosenAction, tile);
+            final var chosenAction = getActionFromUser();
+            final var location = getChosenLocation(chosenCoordinates);
+            playSingleRound(chosenAction, location);
             if (hasWon()) {
                 view.printVictoryMessage();
                 break;
@@ -43,11 +43,11 @@ public class GameController {
         }
     }
 
-    private void playSingleRound(Action chosenAction, Tile tile) {
+    private void playSingleRound(Action chosenAction, Location location) {
         if (chosenAction.equals(Action.FLAG)) {
-            executeFlagMove(tile);
+            executeFlagMove(location);
         } else if (chosenAction.equals(Action.REVEAL)) {
-            executeRevealMove(tile);
+            executeRevealMove(location);
         }
     }
 
@@ -80,16 +80,20 @@ public class GameController {
         }
     }
 
-    private void executeRevealMove(Tile tile) {
-        if (tile.isRevealed()) {
-            view.printMessage("Tile already revealed. Choose another coordinates");
-        } else if (tile.hasBomb()) {
-            endGame(tile);
-            restartGame();
-        } else {
-            tile.setRevealed(true);
-            game.getBoard().addRevealedTile();
-            revealNeighbourEmptyTiles(tile);
+    private void executeRevealMove(Location location) {
+        try {
+            final var revealResult = game.getBoard().revealTile(location);
+            if (revealResult.getStatus().equals(RevealStatus.EXPLODED)) {
+                endGame(location);
+                restartGame();
+            } else if (revealResult.getStatus().equals(RevealStatus.OK)) {
+                final var tile = game.getBoard().getTile(location);
+                tile.setRevealed(true);
+                game.getBoard().addRevealedTile();
+                revealNeighbourEmptyTiles(tile);
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -99,8 +103,9 @@ public class GameController {
         game.resurrectPlayer();
     }
 
-    private void endGame(Tile tile) {
+    private void endGame(Location location) {
         game.killPlayer();
+        final var tile = game.getBoard().getTile(location);
         tile.setRevealed(true);
         view.printMessage("YOU DIED!\n");
         boardDisplay.printBoard(game.getBoard());
@@ -117,11 +122,12 @@ public class GameController {
                 });
     }
 
-    private void executeFlagMove(Tile tile) {
-        if (tile.isRevealed()) {
-            view.printMessage("Tile already revealed. Choose another coordinates");
-        } else {
+    private void executeFlagMove(Location location) {
+        try {
+            Tile tile = game.getBoard().getFlaggedTile(location);
             toggleFlagged(tile);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -129,13 +135,12 @@ public class GameController {
         tile.setFlagged(!tile.isFlagged());
     }
 
-    private Tile getChosenTile(String chosenCoordinates) {
+    private Location getChosenLocation(String chosenCoordinates) {
         final var boardCoordinates = game.getBoard().getBoardCoordinates();
-        final var location = boardCoordinates.get(chosenCoordinates);
-        return game.getBoard().getTile(location);
+        return boardCoordinates.get(chosenCoordinates);
     }
 
-    private Action getAction() {
+    private Action getActionFromUser() {
         String action = "";
         view.printMessage("\nPress R to reveal the tile. Press F to place or remove a flag.");
         do {
