@@ -3,6 +3,8 @@ package com.marcela.game.controller;
 import com.marcela.game.display.BoardDisplay;
 import com.marcela.game.display.View;
 import com.marcela.game.model.*;
+import com.marcela.game.model.enums.Action;
+import com.marcela.game.model.enums.RevealStatus;
 import com.marcela.utils.InputScanner;
 import com.marcela.utils.ScreenMaintenance;
 

@@ -1,6 +1,5 @@
 package com.marcela.game.controller;
 
-import com.marcela.game.controller.LocationController;
 import com.marcela.game.model.Board;
 import com.marcela.game.model.Location;
 import com.marcela.game.model.Player;
@@ -30,6 +29,16 @@ public class Game {
         evaluateNeighbourTiles();
     }
 
+    public Game(Board board) {
+        this.locationController = new LocationController();
+        this.board = board;
+        this.bombs = calculateBombs();
+        this.player = new Player();
+        populateBoard();
+        placeBombs();
+        evaluateNeighbourTiles();
+    }
+
     private Board createBoard(int height, int width) {
         return new Board(height, width);
     }
@@ -38,7 +47,7 @@ public class Game {
         return (int) (board.getHeight() * board.getWidth() * bombDensity);
     }
 
-    private void evaluateNeighbourTiles() {
+    public void evaluateNeighbourTiles() {
         for (int i = 0; i < board.getHeight(); i++) {
             for (int j = 0; j < board.getWidth(); j++) {
                 final var currentLocation = new Location(i, j);

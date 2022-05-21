@@ -1,5 +1,6 @@
 package com.marcela.game.model;
 
+import com.marcela.game.model.enums.RevealStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
