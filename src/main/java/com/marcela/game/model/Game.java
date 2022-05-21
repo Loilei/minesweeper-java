@@ -11,11 +11,13 @@ import java.util.List;
 public class Game {
     private Board board;
     private int bombs;
+    private Player player;
     private final double bombDensity = 0.2;
 
     public Game(int height, int width) {
         this.board = createBoard(height, width);
         this.bombs = calculateBombs();
+        this.player = new Player();
         populateBoard();
         placeBombs();
         board.evaluateNeighbourTiles();
@@ -72,5 +74,17 @@ public class Game {
                 .mapToInt(tile -> 1)
                 .sum();
         return bombs - markedBombs;
+    }
+
+    public void killPlayer() {
+        player.setAlive(false);
+    }
+
+    public void resurrectPlayer() {
+        player.setAlive(true);
+    }
+
+    public boolean isPlayerAlive() {
+        return player.isAlive();
     }
 }
