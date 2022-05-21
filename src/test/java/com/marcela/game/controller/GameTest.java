@@ -3,6 +3,7 @@ package com.marcela.game.controller;
 import com.marcela.game.model.Board;
 import com.marcela.game.model.Location;
 import com.marcela.game.model.Tile;
+import com.marcela.utils.Randomizer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ class GameTest {
     private LocationController locationController;
     private Game game;
 
-    Board board = mock(Board.class);
+    Board mockBoard = mock(Board.class);
 
     @BeforeEach
     void testsSetup() {
@@ -27,7 +28,7 @@ class GameTest {
     @Test
     void whenEvaluateNeighbourTilesDuringCreationIsCalled_tileNeighboursArePopulated() {
         //GIVEN
-        this.game = new Game(4, 4);
+        this.game = new Game(4, 4, new Randomizer());
         Location location = new Location(1, 1);
         var tile = game.getBoard().getTile(location);
         var neighbour1 = game.getBoard().getTile(locationController.getNorthLocation(location));
@@ -48,7 +49,7 @@ class GameTest {
     @Test
     void whenCreatingGame_gameIsCreatedProperly() {
         //GIVEN
-        this.game = new Game(4, 4);
+        this.game = new Game(4, 4, new Randomizer());
         //WHEN
         //THEN
         assertEquals(3, game.getBombs());
@@ -60,7 +61,7 @@ class GameTest {
     @Test
     void whenGameIsCreated_boardTilesArePopulated() {
         //GIVEN
-        this.game = new Game(4, 4);
+        this.game = new Game(4, 4, new Randomizer());
         var location1 = new Location(1, 1);
         var location2 = new Location(0, 2);
         var location3 = new Location(0, 0);
@@ -78,15 +79,15 @@ class GameTest {
     @Test
     void whenAllTilesAreRevealed_areAllTilesRevealedReturnsTrue() {
         //GIVEN
-        this.game = new Game(board);
+        this.game = new Game(mockBoard);
         game.setBombs(2);
         List<Integer> listOfSize16 = new ArrayList<>();
         for (int i = 0; i < 16; i++) {
             listOfSize16.add(1);
         }
         //WHEN
-        doReturn(listOfSize16).when(board).getListOfTiles();
-        when(board.getRevealedTiles()).thenReturn(14);
+        doReturn(listOfSize16).when(mockBoard).getListOfTiles();
+        when(mockBoard.getRevealedTiles()).thenReturn(14);
         //THEN
         assertTrue(game.areAllTilesRevealed());
     }
@@ -94,23 +95,23 @@ class GameTest {
     @Test
     void whenNotAllTilesAreRevealed_areAllTilesRevealedReturnsFalse() {
         //GIVEN
-        this.game = new Game(board);
+        this.game = new Game(mockBoard);
         game.setBombs(2);
         List<Integer> listOfSize16 = new ArrayList<>();
         for (int i = 0; i < 16; i++) {
             listOfSize16.add(1);
         }
         //WHEN
-        doReturn(listOfSize16).when(board).getListOfTiles();
-        when(board.getRevealedTiles()).thenReturn(2);
+        doReturn(listOfSize16).when(mockBoard).getListOfTiles();
+        when(mockBoard.getRevealedTiles()).thenReturn(2);
         //THEN
         assertFalse(game.areAllTilesRevealed());
     }
 
     @Test
-    void whenResetBoard_TilesGetReset() {
+    void whenResetBoard_tilesGetReset() {
         //GIVEN
-        this.game = new Game(4, 4);
+        this.game = new Game(4, 4, new Randomizer());
         Tile tile1 = game.getBoard().getTile(new Location(1, 1));
         Tile tile2 = game.getBoard().getTile(new Location(1, 2));
         tile1.setRevealed(true);
@@ -122,11 +123,10 @@ class GameTest {
         assertFalse(tile2.isFlagged());
     }
 
-
     @Test
-    void whenKillPlayer_PlayerIsKilled() {
+    void whenKillPlayer_playerIsKilled() {
         //GIVEN
-        this.game = new Game(4, 4);
+        this.game = new Game(4, 4, new Randomizer());
         //WHEN
         game.killPlayer();
         //THEN
@@ -134,9 +134,9 @@ class GameTest {
     }
 
     @Test
-    void whenPlayerIsResurrected_IsAliveIsSetToTrue() {
+    void whenPlayerIsResurrected_isAliveIsSetToTrue() {
         //GIVEN
-        this.game = new Game(4, 4);
+        this.game = new Game(4, 4, new Randomizer());
         //WHEN
         game.resurrectPlayer();
         //THEN

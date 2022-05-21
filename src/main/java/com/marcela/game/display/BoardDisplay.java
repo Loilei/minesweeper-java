@@ -55,4 +55,5 @@ public class BoardDisplay {
                 .limit(board.getWidth())
                 .forEach(letter -> sb.append(" ").append(letter).append(" "));
     }
+
 }

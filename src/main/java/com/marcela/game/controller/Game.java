@@ -16,12 +16,15 @@ public class Game {
     private Board board;
     private Player player;
     private final LocationController locationController;
+    private Randomizer randomizer;
 
-    public Game(int height, int width) {
+
+    public Game(int height, int width, Randomizer randomizer) {
         this.locationController = new LocationController();
         this.board = createBoard(height, width);
         this.bombs = calculateBombs();
         this.player = new Player();
+        this.randomizer = randomizer;
         populateBoard();
         placeBombs();
         evaluateNeighbourTiles();
@@ -32,6 +35,7 @@ public class Game {
         this.board = board;
         this.bombs = calculateBombs();
         this.player = new Player();
+        this.randomizer = new Randomizer();
         populateBoard();
         placeBombs();
         evaluateNeighbourTiles();
@@ -70,7 +74,7 @@ public class Game {
         final var listOfTiles = board.getListOfTiles();
         int bombsLeft = this.bombs;
         while (bombsLeft > 0) {
-            int randomTileIndex = Randomizer.getRandomNumberFromRange(0, listOfTiles.size() - 1);
+            int randomTileIndex = randomizer.getRandomNumberFromRange(0, listOfTiles.size() - 1);
             Tile selectedTile = listOfTiles.get(randomTileIndex);
             if (!selectedTile.hasBomb()) {
                 selectedTile.setHasBomb(true);
@@ -146,5 +150,13 @@ public class Game {
             neighbourTiles.add(board.getTile(locationController.getNorthWestLocation(currentLocation)));
         } catch (Exception ignored) {
         }
+    }
+
+    public void setRandomizer(Randomizer randomizer) {
+        this.randomizer = randomizer;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 }

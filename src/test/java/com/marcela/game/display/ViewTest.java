@@ -15,7 +15,6 @@ class ViewTest {
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
     private final View view = new View();
 
-
     @BeforeEach
     void setup() {
         System.setOut(new PrintStream(outputStreamCaptor));

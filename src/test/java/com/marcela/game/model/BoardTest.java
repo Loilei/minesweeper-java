@@ -1,10 +1,9 @@
 package com.marcela.game.model;
 
-import com.marcela.game.controller.LocationController;
+import com.marcela.game.model.enums.RevealStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,10 +19,8 @@ class BoardTest {
 
     @Test
     void whenCreatingBoard_boardIsCreatedProperly() {
-        //GIVEN
         var board = new Board(4,4);
-        //WHEN
-        //THEN
+
         assertEquals(4, board.getHeight());
         assertEquals(4, board.getWidth());
         assertEquals(0, board.getRevealedTiles());
@@ -35,10 +32,8 @@ class BoardTest {
 
     @Test
     void whenCreatingBoard_fieldsAreNotNull() {
-        //GIVEN
-        //WHEN
-        //THEN
-        assertNotNull(board);
+        var board = new Board(4,4);
+
         assertNotNull(board.getPlayArea());
         assertNotNull(board.getBoardCoordinates());
         assertNotNull(board.getListOfTiles());
@@ -65,6 +60,17 @@ class BoardTest {
         var boardTile = board.getTile(new Location(1, 1));
         //THEN
         assertEquals(tile, boardTile);
+    }
+
+    @Test
+    void whenPlayerRevealsBomb_playerExplodes() {
+        //GIVEN
+        var userChosenLocation = new Location(1, 1);
+        //WHEN
+        board.getTile(userChosenLocation).setHasBomb(true);
+        RevealResult revealResult = board.revealTile(userChosenLocation);
+        //THEN
+        assertEquals(RevealStatus.EXPLODED, revealResult.getStatus());
     }
 
     private void setTilesInBoard() {

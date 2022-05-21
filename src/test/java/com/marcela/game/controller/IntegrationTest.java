@@ -1,43 +1,59 @@
 package com.marcela.game.controller;
 
-import com.marcela.game.model.Board;
 import com.marcela.game.model.Location;
-import com.marcela.game.model.RevealResult;
-import com.marcela.game.model.Tile;
-import com.marcela.game.model.enums.RevealStatus;
+import com.marcela.utils.InputScanner;
+import com.marcela.utils.Randomizer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.when;
 
 class IntegrationTest {
-    private Board board;
+    InputScanner mockInput;
+    Randomizer mockRandomizer;
 
     @BeforeEach
     void testsSetup() {
-        this.board = new Board(4, 4);
-        setTilesInBoard();
+        mockInput = Mockito.mock(InputScanner.class);
+        mockRandomizer = Mockito.mock(Randomizer.class);
     }
 
     @Test
-    void whenPlayerRevealsBomb_playerExplodes() {
-        //GIVEN
-        var userChosenLocation = new Location(1, 1);
-        //WHEN
-        board.getTile(userChosenLocation).setHasBomb(true);
-        RevealResult revealResult = board.revealTile(userChosenLocation);
-        //THEN
-        assertEquals(RevealStatus.EXPLODED, revealResult.getStatus());
+    void whenPlayerIsNotHittingABomb_playerMakesAMove() {
+        //given
+        when(mockInput.getBoardSizeInput(anyString())).thenReturn(3);
+
+        var game = new GameController(mockInput);
+        game.initiateGame(mockRandomizer);
+
+        //when
+        game.executeRevealMove(xy(1,1));
+
+        //then
+        assertThat(game.getGame().getPlayer().isAlive()).isTrue();
+        assertThat(game.getGame().getBoard().getTile(xy(1,1)).isRevealed()).isTrue();
     }
 
-    private void setTilesInBoard() {
-        for (int i = 0; i < board.getHeight(); i++) {
-            for (int j = 0; j < board.getWidth(); j++) {
-                final var location = new Location(i, j);
-                final var tile = new Tile(location);
-                board.getPlayArea()[i][j] = tile;
-                board.getListOfTiles().add(tile);
-            }
-        }
+    @Test
+    void whenPlayerHitsABomb_PlayerExplodes() {
+        //given
+        when(mockInput.getBoardSizeInput(anyString())).thenReturn(3);
+
+        var game = new GameController(mockInput);
+        game.initiateGame(mockRandomizer);
+
+        //when
+        game.executeRevealMove(xy(0,0));
+
+        //then
+        assertThat(game.getGame().getPlayer().isAlive()).isFalse();
+        assertThat(game.getGame().getBoard().getTile(xy(0,0)).isRevealed()).isTrue();
+    }
+
+    private static Location xy(int x, int y) {
+        return new Location(x, y);
     }
 }

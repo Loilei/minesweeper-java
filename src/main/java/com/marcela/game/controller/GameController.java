@@ -6,6 +6,7 @@ import com.marcela.game.model.*;
 import com.marcela.game.model.enums.Action;
 import com.marcela.game.model.enums.RevealStatus;
 import com.marcela.utils.InputScanner;
+import com.marcela.utils.Randomizer;
 import com.marcela.utils.ScreenMaintenance;
 import lombok.Getter;
 
@@ -24,16 +25,20 @@ public class GameController {
         this.inputScanner = new InputScanner();
     }
 
-    public void start() {
-        view.printWelcomeMessage();
-        this.game = createMap();
-        setPlayersName();
-        view.printMessage("Let the game begin!\n");
-        runGame();
-        playAgain();
+    public GameController(InputScanner scanner) {
+        this.view = new View();
+        this.boardDisplay = new BoardDisplay();
+        this.inputScanner = scanner;
     }
 
-    private void runGame() {
+    public void initiateGame(Randomizer randomizer) {
+        view.printWelcomeMessage();
+        this.game = createMap(randomizer);
+        setPlayersName();
+        view.printMessage("Let the game begin!\n");
+    }
+
+    public void runGame() {
         while (!isGameOver()) {
             printUi();
             final var chosenCoordinates = getCoordinatesFromUser();
@@ -44,6 +49,10 @@ public class GameController {
                 view.printVictoryMessage();
                 break;
             }
+            if (!game.isPlayerAlive()) {
+                restartGame();
+            }
+
         }
     }
 
@@ -60,10 +69,10 @@ public class GameController {
         boardDisplay.printBoard(game.getBoard());
     }
 
-    private Game createMap() {
+    private Game createMap(Randomizer randomizer) {
         final var height = inputScanner.getBoardSizeInput("Choose map height (minimum 5, maximum 10) and hit Enter: ");
         final var width = inputScanner.getBoardSizeInput("Choose map width (minimum 5, maximum 10) and hit Enter: ");
-        return new Game(height, width);
+        return new Game(height, width, randomizer);
     }
 
     private void setPlayersName() {
@@ -72,24 +81,23 @@ public class GameController {
         view.printWelcomePlayerMessage(game.getPlayer().getName());
     }
 
-    private void playAgain() {
+    public void playAgain() {
         view.printMessage("Do you want to play again? [Y/N]: ");
         final var options = Arrays.asList("Y", "N");
         final var playAgain = inputScanner.getLimitedInput(options);
         if (playAgain.equals("Y")) {
             ScreenMaintenance.clearScreen();
-            start();
+            initiateGame(new Randomizer());
         } else {
             ScreenMaintenance.quitGame();
         }
     }
 
-    private void executeRevealMove(Location location) {
+    public void executeRevealMove(Location location) {
         try {
             final var revealResult = game.getBoard().revealTile(location);
             if (revealResult.getStatus().equals(RevealStatus.EXPLODED)) {
                 endGame(location);
-                restartGame();
             } else if (revealResult.getStatus().equals(RevealStatus.OK)) {
                 final var tile = game.getBoard().getTile(location);
                 tile.setRevealed(true);
