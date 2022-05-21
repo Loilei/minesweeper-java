@@ -1,5 +1,10 @@
-package com.marcela.game.model;
+package com.marcela.game.controller;
 
+import com.marcela.game.controller.LocationController;
+import com.marcela.game.model.Board;
+import com.marcela.game.model.Location;
+import com.marcela.game.model.Player;
+import com.marcela.game.model.Tile;
 import lombok.Getter;
 import lombok.Setter;
 import com.marcela.utils.Randomizer;
@@ -13,14 +18,16 @@ public class Game {
     private int bombs;
     private Board board;
     private Player player;
+    private final LocationController locationController;
 
     public Game(int height, int width) {
+        this.locationController = new LocationController();
         this.board = createBoard(height, width);
         this.bombs = calculateBombs();
         this.player = new Player();
         populateBoard();
         placeBombs();
-        board.evaluateNeighbourTiles();
+        evaluateNeighbourTiles();
     }
 
     private Board createBoard(int height, int width) {
@@ -29,6 +36,16 @@ public class Game {
 
     private int calculateBombs() {
         return (int) (board.getHeight() * board.getWidth() * bombDensity);
+    }
+
+    private void evaluateNeighbourTiles() {
+        for (int i = 0; i < board.getHeight(); i++) {
+            for (int j = 0; j < board.getWidth(); j++) {
+                final var currentLocation = new Location(i, j);
+                final var currentTile = board.getTile(currentLocation);
+                getTileNeighbours(currentLocation, currentTile);
+            }
+        }
     }
 
     private void populateBoard() {
@@ -86,5 +103,41 @@ public class Game {
 
     public boolean isPlayerAlive() {
         return player.isAlive();
+    }
+
+    private void getTileNeighbours(Location currentLocation, Tile currentTile) {
+        final var neighbourTiles = currentTile.getNeighbourTiles();
+        try {
+            neighbourTiles.add(board.getTile(locationController.getNorthLocation(currentLocation)));
+        } catch (Exception ignored) {
+        }
+        try {
+            neighbourTiles.add(board.getTile(locationController.getNorthEastLocation(currentLocation)));
+        } catch (Exception ignored) {
+        }
+        try {
+            neighbourTiles.add(board.getTile(locationController.getEastLocation(currentLocation)));
+        } catch (Exception ignored) {
+        }
+        try {
+            neighbourTiles.add(board.getTile(locationController.getSouthEastLocation(currentLocation)));
+        } catch (Exception ignored) {
+        }
+        try {
+            neighbourTiles.add(board.getTile(locationController.getSouthLocation(currentLocation)));
+        } catch (Exception ignored) {
+        }
+        try {
+            neighbourTiles.add(board.getTile(locationController.getSouthWestLocation(currentLocation)));
+        } catch (Exception ignored) {
+        }
+        try {
+            neighbourTiles.add(board.getTile(locationController.getWestLocation(currentLocation)));
+        } catch (Exception ignored) {
+        }
+        try {
+            neighbourTiles.add(board.getTile(locationController.getNorthWestLocation(currentLocation)));
+        } catch (Exception ignored) {
+        }
     }
 }
