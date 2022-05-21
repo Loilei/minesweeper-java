@@ -1,4 +1,4 @@
-package utils;
+package com.marcela.utils;
 
 public class ScreenMaintenance {
 

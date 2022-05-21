@@ -1,6 +1,6 @@
-package game.controller;
+package com.marcela.game.controller;
 
-import game.model.Location;
+import com.marcela.game.model.Location;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

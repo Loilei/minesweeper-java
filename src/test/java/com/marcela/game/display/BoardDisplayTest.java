@@ -1,8 +1,8 @@
-package game.display;
+package com.marcela.game.display;
 
-import game.model.Board;
-import game.model.Location;
-import game.model.Tile;
+import com.marcela.game.model.Board;
+import com.marcela.game.model.Location;
+import com.marcela.game.model.Tile;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

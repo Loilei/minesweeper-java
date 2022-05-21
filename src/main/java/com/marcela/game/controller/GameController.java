@@ -1,10 +1,10 @@
-package game.controller;
+package com.marcela.game.controller;
 
-import game.display.BoardDisplay;
-import game.display.View;
-import game.model.*;
-import utils.InputScanner;
-import utils.ScreenMaintenance;
+import com.marcela.game.display.BoardDisplay;
+import com.marcela.game.display.View;
+import com.marcela.game.model.*;
+import com.marcela.utils.InputScanner;
+import com.marcela.utils.ScreenMaintenance;
 
 import java.util.Arrays;
 
@@ -25,7 +25,7 @@ public class GameController {
         view.printWelcomeMessage();
         this.player = createPlayer();
         this.game = createMap();
-        view.printMessage("Let the game begin!\n");
+        view.printMessage("Let the com.marcela.game begin!\n");
         runGame();
         playAgain();
     }
@@ -97,7 +97,7 @@ public class GameController {
     }
 
     private void restartGame() {
-        view.printMessage("\nYou have died " + player.getName() + ". Your game has been restarted with same bomb placement.\n");
+        view.printMessage("\nYou have died " + player.getName() + ". Your com.marcela.game has been restarted with same bomb placement.\n");
         game.resetBoard();
         player.setAlive(true);
     }

@@ -1,6 +1,6 @@
-package game.model;
+package com.marcela.game.model;
 
-import game.controller.LocationController;
+import com.marcela.game.controller.LocationController;
 import lombok.Getter;
 
 import java.util.ArrayList;

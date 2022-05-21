@@ -1,8 +1,8 @@
-package game.model;
+package com.marcela.game.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import utils.Randomizer;
+import com.marcela.utils.Randomizer;
 
 import java.util.List;
 

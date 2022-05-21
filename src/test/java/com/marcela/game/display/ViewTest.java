@@ -1,6 +1,6 @@
-package game.display;
+package com.marcela.game.display;
 
-import game.model.Player;
+import com.marcela.game.model.Player;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ class ViewTest {
     @Test
     void whenWelcomeMessagePrintIsCalled_displayTheMessage() {
         //GIVEN
-        var expectedMessage = "Welcome to Minesweeper!\n Wanna play a game?\n";
+        var expectedMessage = "Welcome to Minesweeper!\n Wanna play a com.marcela.game?\n";
         //WHEN
         view.printMessage(expectedMessage);
         //THEN

@@ -1,4 +1,4 @@
-package game.model;
+package com.marcela.game.model;
 
 import lombok.Data;
 

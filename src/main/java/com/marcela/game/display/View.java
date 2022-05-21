@@ -1,4 +1,4 @@
-package game.display;
+package com.marcela.game.display;
 
 public class View {
 
@@ -7,7 +7,7 @@ public class View {
     }
 
     public void printWelcomeMessage() {
-        printMessage("Welcome to Minesweeper!\n Wanna play a game?\n");
+        printMessage("Welcome to Minesweeper!\n Wanna play a com.marcela.game?\n");
     }
 
     public void printWelcomePlayerMessage(String playerName){

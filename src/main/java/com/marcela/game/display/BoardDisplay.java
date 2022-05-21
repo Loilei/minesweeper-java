@@ -1,7 +1,7 @@
-package game.display;
+package com.marcela.game.display;
 
-import game.model.Board;
-import game.model.Location;
+import com.marcela.game.model.Board;
+import com.marcela.game.model.Location;
 import lombok.NoArgsConstructor;
 
 import java.util.Arrays;

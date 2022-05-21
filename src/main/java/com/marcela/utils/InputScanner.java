@@ -1,4 +1,4 @@
-package utils;
+package com.marcela.utils;
 
 import java.util.List;
 import java.util.Scanner;

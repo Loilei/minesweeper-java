@@ -1,6 +1,6 @@
-package game.controller;
+package com.marcela.game.controller;
 
-import game.model.Location;
+import com.marcela.game.model.Location;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
