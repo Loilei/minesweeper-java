@@ -9,10 +9,10 @@ import java.util.List;
 @Getter
 @Setter
 public class Game {
-    private Board board;
-    private int bombs;
-    private Player player;
     private final double bombDensity = 0.2;
+    private int bombs;
+    private Board board;
+    private Player player;
 
     public Game(int height, int width) {
         this.board = createBoard(height, width);

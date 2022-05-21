@@ -65,7 +65,7 @@ class BoardTest {
         //GIVEN
         var tile = new Tile(new Location(1,1));
         //WHEN
-        Tile boardTile = board.getTile(new Location(1, 1));
+        var boardTile = board.getTile(new Location(1, 1));
         //THEN
         assertEquals(tile, boardTile);
     }
@@ -74,15 +74,15 @@ class BoardTest {
     void whenEvaluateNeighbourTilesIsCalled_tileNeighboursArePopulated () {
         //GIVEN
         Location location = new Location(1, 1);
-        Tile tile = board.getTile(location);
-        Tile neighbour1 = board.getTile(locationController.getNorthLocation(location));
-        Tile neighbour2 = board.getTile(locationController.getNorthEastLocation(location));
-        Tile neighbour3 = board.getTile(locationController.getEastLocation(location));
-        Tile neighbour4 = board.getTile(locationController.getSouthEastLocation(location));
-        Tile neighbour5 = board.getTile(locationController.getSouthLocation(location));
-        Tile neighbour6 = board.getTile(locationController.getSouthWestLocation(location));
-        Tile neighbour7 = board.getTile(locationController.getWestLocation(location));
-        Tile neighbour8 = board.getTile(locationController.getNorthWestLocation(location));
+        var tile = board.getTile(location);
+        var neighbour1 = board.getTile(locationController.getNorthLocation(location));
+        var neighbour2 = board.getTile(locationController.getNorthEastLocation(location));
+        var neighbour3 = board.getTile(locationController.getEastLocation(location));
+        var neighbour4 = board.getTile(locationController.getSouthEastLocation(location));
+        var neighbour5 = board.getTile(locationController.getSouthLocation(location));
+        var neighbour6 = board.getTile(locationController.getSouthWestLocation(location));
+        var neighbour7 = board.getTile(locationController.getWestLocation(location));
+        var neighbour8 = board.getTile(locationController.getNorthWestLocation(location));
         var listOfNeighbours = Arrays.asList(neighbour1, neighbour2, neighbour3, neighbour4, neighbour5, neighbour6, neighbour7, neighbour8);
         //WHEN
         board.evaluateNeighbourTiles();

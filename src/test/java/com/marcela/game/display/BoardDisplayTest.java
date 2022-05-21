@@ -20,8 +20,8 @@ class BoardDisplayTest {
 
     @BeforeEach
     void testsSetup() {
-        int height = 4;
-        int width = 4;
+        var height = 4;
+        var width = 4;
         this.board = new Board(height, width);
         setTilesInBoard();
         setBombsInFirstRow();
@@ -64,7 +64,7 @@ class BoardDisplayTest {
     }
 
     private void setBombsInFirstRow() {
-        Tile[] firstRowTiles = board.getPlayArea()[0];
+        var firstRowTiles = board.getPlayArea()[0];
         Stream.of(firstRowTiles)
                 .forEach(tile -> {
                     tile.setHasBomb(true);
@@ -73,13 +73,13 @@ class BoardDisplayTest {
     }
 
     private void flagThirdRow() {
-        Tile[] thirdRowTiles = board.getPlayArea()[2];
+        var thirdRowTiles = board.getPlayArea()[2];
         Stream.of(thirdRowTiles)
                 .forEach(tile -> tile.setFlagged(true));
     }
 
     private void revealFourthRow() {
-        Tile[] secondRowTiles = board.getPlayArea()[3];
+        var secondRowTiles = board.getPlayArea()[3];
         Stream.of(secondRowTiles)
                 .forEach(tile -> tile.setRevealed(true));
     }
