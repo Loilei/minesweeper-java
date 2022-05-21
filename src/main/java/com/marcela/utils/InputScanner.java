@@ -14,6 +14,10 @@ public class InputScanner {
         return scanner.nextLine().toUpperCase();
     }
 
+    public String getActionStringInput() {
+        return scanner.nextLine().toUpperCase();
+    }
+
     public int getBoardSizeInput(String message) {
         int number;
         System.out.println(message);

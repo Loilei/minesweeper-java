@@ -7,9 +7,11 @@ import com.marcela.game.model.enums.Action;
 import com.marcela.game.model.enums.RevealStatus;
 import com.marcela.utils.InputScanner;
 import com.marcela.utils.ScreenMaintenance;
+import lombok.Getter;
 
 import java.util.Arrays;
 
+@Getter
 public class GameController {
     private Game game;
     private final View view;
@@ -20,6 +22,11 @@ public class GameController {
         this.view = new View();
         this.boardDisplay = new BoardDisplay();
         this.inputScanner = new InputScanner();
+    }
+    public GameController(InputScanner inputScanner) {
+        this.view = new View();
+        this.boardDisplay = new BoardDisplay();
+        this.inputScanner = inputScanner;
     }
 
     public void start() {
@@ -146,7 +153,7 @@ public class GameController {
         String action = "";
         view.printMessage("\nPress R to reveal the tile. Press F to place or remove a flag.");
         do {
-            action = inputScanner.getStringInput().toUpperCase();
+            action = inputScanner.getActionStringInput().toUpperCase();
             if (!isActionValid(action)) {
                 view.printMessage("Action is not valid. Choose a valid action [R/F]: ");
             }
