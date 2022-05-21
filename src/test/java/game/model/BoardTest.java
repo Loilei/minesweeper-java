@@ -23,6 +23,7 @@ class BoardTest {
     @Test
     void whenCreatingBoard_boardIsCreatedProperly() {
         //GIVEN
+        var board = new Board(4,4);
         //WHEN
         //THEN
         assertEquals(4, board.getHeight());
