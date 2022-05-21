@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 import com.marcela.utils.Randomizer;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class Game {
@@ -54,7 +56,32 @@ public class Game {
             for (int j = 0; j < board.getWidth(); j++) {
                 final var currentLocation = new Location(i, j);
                 final var currentTile = board.getTile(currentLocation);
-                getTileNeighbours(currentLocation, currentTile);
+                final var currentTileNeighbours = currentTile.getNeighbourTiles();
+                if (i == 0) {
+                    if (j == 0) {
+                        getTopLeftCornerNeighbours(currentLocation, currentTileNeighbours);
+                    } else if (j == (board.getWidth() - 1)) {
+                        getTopRightCornerNeighbours(currentLocation, currentTileNeighbours);
+                    } else {
+                        getTopBorderNeighbours(currentLocation, currentTileNeighbours);
+                    }
+                } else if (i == (board.getHeight() - 1)) {
+                    if (j == 0) {
+                        getBottomLeftCornerNeighbours(currentLocation, currentTileNeighbours);
+                    } else if (j == board.getWidth() - 1) {
+                        getBottomRightCornerNeighbours(currentLocation, currentTileNeighbours);
+                    } else {
+                        getBottomBorderNeighbours(currentLocation, currentTileNeighbours);
+                    }
+                } else {
+                    if (j == 0) {
+                        getLeftBorderNeighbours(currentLocation, currentTileNeighbours);
+                    } else if (j == (board.getWidth() - 1)) {
+                        getRightBorderNeighbours(currentLocation, currentTileNeighbours);
+                    } else {
+                        getMiddleTileNeighbours(currentLocation, currentTileNeighbours);
+                    }
+                }
             }
         }
     }
@@ -84,7 +111,15 @@ public class Game {
     }
 
     public boolean areAllTilesRevealed() {
-        return board.getListOfTiles().size() - board.getRevealedTiles() - bombs == 0;
+        final var revealedTiles = getRevealedTiles();
+        return board.getListOfTiles().size() - revealedTiles - bombs == 0;
+    }
+
+    public int getRevealedTiles() {
+        return board.getListOfTiles().stream()
+                .filter(Tile::isRevealed)
+                .mapToInt(tile -> 1)
+                .sum();
     }
 
     public void resetBoard() {
@@ -116,44 +151,71 @@ public class Game {
         return player.isAlive();
     }
 
-    private void getTileNeighbours(Location currentLocation, Tile currentTile) {
-        final var neighbourTiles = currentTile.getNeighbourTiles();
-        try {
-            neighbourTiles.add(board.getTile(locationController.getNorthLocation(currentLocation)));
-        } catch (Exception ignored) {
-        }
-        try {
-            neighbourTiles.add(board.getTile(locationController.getNorthEastLocation(currentLocation)));
-        } catch (Exception ignored) {
-        }
-        try {
-            neighbourTiles.add(board.getTile(locationController.getEastLocation(currentLocation)));
-        } catch (Exception ignored) {
-        }
-        try {
-            neighbourTiles.add(board.getTile(locationController.getSouthEastLocation(currentLocation)));
-        } catch (Exception ignored) {
-        }
-        try {
-            neighbourTiles.add(board.getTile(locationController.getSouthLocation(currentLocation)));
-        } catch (Exception ignored) {
-        }
-        try {
-            neighbourTiles.add(board.getTile(locationController.getSouthWestLocation(currentLocation)));
-        } catch (Exception ignored) {
-        }
-        try {
-            neighbourTiles.add(board.getTile(locationController.getWestLocation(currentLocation)));
-        } catch (Exception ignored) {
-        }
-        try {
-            neighbourTiles.add(board.getTile(locationController.getNorthWestLocation(currentLocation)));
-        } catch (Exception ignored) {
-        }
+    private void getMiddleTileNeighbours(Location currentLocation, List<Tile> neighbourTiles) {
+        neighbourTiles.add(board.getTile(locationController.getNorthLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getNorthEastLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getEastLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getSouthEastLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getSouthLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getSouthWestLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getWestLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getNorthWestLocation(currentLocation)));
     }
 
-    public void setRandomizer(Randomizer randomizer) {
-        this.randomizer = randomizer;
+    private void getRightBorderNeighbours(Location currentLocation, List<Tile> neighbourTiles) {
+        neighbourTiles.add(board.getTile(locationController.getNorthLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getNorthWestLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getWestLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getSouthWestLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getSouthLocation(currentLocation)));
+    }
+
+    private void getLeftBorderNeighbours(Location currentLocation, List<Tile> neighbourTiles) {
+        neighbourTiles.add(board.getTile(locationController.getNorthLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getNorthEastLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getEastLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getSouthEastLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getSouthLocation(currentLocation)));
+    }
+
+    private void getTopBorderNeighbours(Location currentLocation, List<Tile> neighbourTiles) {
+        neighbourTiles.add(board.getTile(locationController.getWestLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getSouthWestLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getSouthLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getSouthEastLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getEastLocation(currentLocation)));
+    }
+
+    private void getBottomBorderNeighbours(Location currentLocation, List<Tile> neighbourTiles) {
+        neighbourTiles.add(board.getTile(locationController.getWestLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getNorthWestLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getNorthLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getNorthEastLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getEastLocation(currentLocation)));
+    }
+
+    private void getBottomRightCornerNeighbours(Location currentLocation, List<Tile> neighbourTiles) {
+        neighbourTiles.add(board.getTile(locationController.getNorthLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getNorthWestLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getWestLocation(currentLocation)));
+    }
+
+    private void getBottomLeftCornerNeighbours(Location currentLocation, List<Tile> neighbourTiles) {
+        neighbourTiles.add(board.getTile(locationController.getNorthLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getNorthEastLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getEastLocation(currentLocation)));
+    }
+
+    private void getTopRightCornerNeighbours(Location currentLocation, List<Tile> neighbourTiles) {
+        neighbourTiles.add(board.getTile(locationController.getSouthLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getSouthWestLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getWestLocation(currentLocation)));
+    }
+
+    private void getTopLeftCornerNeighbours(Location currentLocation, List<Tile> neighbourTiles) {
+        neighbourTiles.add(board.getTile(locationController.getEastLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getSouthLocation(currentLocation)));
+        neighbourTiles.add(board.getTile(locationController.getSouthEastLocation(currentLocation)));
     }
 
     public Board getBoard() {

@@ -23,7 +23,6 @@ class BoardTest {
 
         assertEquals(4, board.getHeight());
         assertEquals(4, board.getWidth());
-        assertEquals(0, board.getRevealedTiles());
         assertEquals(0, board.getListOfTiles().size());
         assertEquals(Collections.emptyList(), board.getListOfTiles());
         assertTrue(board.getBoardCoordinates().size() > 0);

@@ -12,7 +12,6 @@ import java.util.Map;
 public class Board {
     private final int height;
     private final int width;
-    private int revealedTiles;
     private final List<Tile> listOfTiles;
     private final Map<String, Location> boardCoordinates;
     private final Tile[][] playArea;
@@ -20,7 +19,6 @@ public class Board {
     public Board(int height, int width) {
         this.height = height;
         this.width = width;
-        this.revealedTiles = 0;
         this.playArea = new Tile[this.height][this.width];
         this.listOfTiles = new ArrayList<>();
         this.boardCoordinates = populateBoardCoordinates();
@@ -46,10 +44,6 @@ public class Board {
 
     public Tile getTile(Location location) {
         return playArea[location.x()][location.y()];
-    }
-
-    public void addRevealedTile() {
-        this.revealedTiles++;
     }
 
     private Map<String, Location> populateBoardCoordinates() {

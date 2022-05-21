@@ -80,6 +80,9 @@ class GameTest {
     void whenAllTilesAreRevealed_areAllTilesRevealedReturnsTrue() {
         //GIVEN
         this.game = new Game(mockBoard);
+        game.getBoard().getListOfTiles().stream()
+                .limit(14)
+                .forEach(tile -> tile.setRevealed(true));
         game.setBombs(2);
         List<Integer> listOfSize16 = new ArrayList<>();
         for (int i = 0; i < 16; i++) {
@@ -87,7 +90,6 @@ class GameTest {
         }
         //WHEN
         doReturn(listOfSize16).when(mockBoard).getListOfTiles();
-        when(mockBoard.getRevealedTiles()).thenReturn(14);
         //THEN
         assertTrue(game.areAllTilesRevealed());
     }
@@ -96,6 +98,9 @@ class GameTest {
     void whenNotAllTilesAreRevealed_areAllTilesRevealedReturnsFalse() {
         //GIVEN
         this.game = new Game(mockBoard);
+        game.getBoard().getListOfTiles().stream()
+                .limit(2)
+                .forEach(tile -> tile.setRevealed(true));
         game.setBombs(2);
         List<Integer> listOfSize16 = new ArrayList<>();
         for (int i = 0; i < 16; i++) {
@@ -103,7 +108,6 @@ class GameTest {
         }
         //WHEN
         doReturn(listOfSize16).when(mockBoard).getListOfTiles();
-        when(mockBoard.getRevealedTiles()).thenReturn(2);
         //THEN
         assertFalse(game.areAllTilesRevealed());
     }

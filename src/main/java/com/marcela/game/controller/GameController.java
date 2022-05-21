@@ -88,6 +88,7 @@ public class GameController {
         if (playAgain.equals("Y")) {
             ScreenMaintenance.clearScreen();
             initiateGame(new Randomizer());
+            runGame();
         } else {
             ScreenMaintenance.quitGame();
         }
@@ -101,7 +102,6 @@ public class GameController {
             } else if (revealResult.getStatus().equals(RevealStatus.OK)) {
                 final var tile = game.getBoard().getTile(location);
                 tile.setRevealed(true);
-                game.getBoard().addRevealedTile();
                 revealNeighbourEmptyTiles(tile);
             }
         } catch (IllegalArgumentException e) {
@@ -129,8 +129,9 @@ public class GameController {
                 .filter(neighbour -> !neighbour.hasBomb())
                 .filter(neighbour -> neighbour.getNumberOfNeighbourBombs() == 0)
                 .forEach(neighbour -> {
-                    neighbour.setRevealed(true);
-                    game.getBoard().addRevealedTile();
+                    if (!neighbour.isRevealed()) {
+                        neighbour.setRevealed(true);
+                    }
                 });
     }
 
