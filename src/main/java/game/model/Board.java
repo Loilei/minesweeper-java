@@ -13,10 +13,10 @@ public class Board {
     private final int height;
     private final int width;
     private int revealedTiles;
-    private final LocationController locationController;
-    private final Tile[][] playArea;
     private final List<Tile> listOfTiles;
     private final Map<String, Location> boardCoordinates;
+    private final Tile[][] playArea;
+    private final LocationController locationController;
 
     public Board(int height, int width) {
         this.height = height;
