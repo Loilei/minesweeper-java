@@ -4,6 +4,7 @@ Minesweeper is a single player game. In this game we have a field (grid with squ
 # Installation
 
 The game can be played both in IDE or console.
+Please note that both Java and Maven must be using **java version 17** for the build to work.
 
 **IDE**
 
@@ -15,7 +16,10 @@ Here is what you need to do to set up the project:
 
 **CONSOLE**
 
-
+1. Open command and navigate to the main folder /minesweeper-java
+2. Type 'mvn install' to build the project
+3. Go to 'target' folder (cd target)
+4. Type java -jar minesweeper-java-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 # How to play
 The win condition is to reveal all tiles that do not contain bomb.
