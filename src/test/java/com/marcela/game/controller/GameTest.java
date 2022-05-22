@@ -1,24 +1,18 @@
 package com.marcela.game.controller;
 
-import com.marcela.game.model.Board;
 import com.marcela.game.model.Location;
 import com.marcela.game.model.Tile;
 import com.marcela.utils.Randomizer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class GameTest {
     private LocationController locationController;
     private Game game;
-
-    Board mockBoard = mock(Board.class);
 
     @BeforeEach
     void testsSetup() {
@@ -74,42 +68,6 @@ class GameTest {
         assertNotNull(game.getBoard().getTile(location3));
         assertNotNull(game.getBoard().getTile(location4));
         assertNotNull(game.getBoard().getTile(location5));
-    }
-
-    @Test
-    void whenAllTilesAreRevealed_areAllTilesRevealedReturnsTrue() {
-        //GIVEN
-        this.game = new Game(mockBoard);
-        game.getBoard().getListOfTiles().stream()
-                .limit(14)
-                .forEach(tile -> tile.setRevealed(true));
-        game.setBombs(2);
-        List<Integer> listOfSize16 = new ArrayList<>();
-        for (int i = 0; i < 16; i++) {
-            listOfSize16.add(1);
-        }
-        //WHEN
-        doReturn(listOfSize16).when(mockBoard).getListOfTiles();
-        //THEN
-        assertTrue(game.areAllTilesRevealed());
-    }
-
-    @Test
-    void whenNotAllTilesAreRevealed_areAllTilesRevealedReturnsFalse() {
-        //GIVEN
-        this.game = new Game(mockBoard);
-        game.getBoard().getListOfTiles().stream()
-                .limit(2)
-                .forEach(tile -> tile.setRevealed(true));
-        game.setBombs(2);
-        List<Integer> listOfSize16 = new ArrayList<>();
-        for (int i = 0; i < 16; i++) {
-            listOfSize16.add(1);
-        }
-        //WHEN
-        doReturn(listOfSize16).when(mockBoard).getListOfTiles();
-        //THEN
-        assertFalse(game.areAllTilesRevealed());
     }
 
     @Test

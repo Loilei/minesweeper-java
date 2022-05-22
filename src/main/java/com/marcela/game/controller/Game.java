@@ -116,10 +116,11 @@ public class Game {
     }
 
     public int getRevealedTiles() {
-        return board.getListOfTiles().stream()
+        final var sum = board.getListOfTiles().stream()
                 .filter(Tile::isRevealed)
                 .mapToInt(tile -> 1)
                 .sum();
+        return sum;
     }
 
     public void resetBoard() {

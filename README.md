@@ -1,9 +1,39 @@
 # minesweeper-java
-Minesweeper is a single player game. In this game we have a field (grid with squares) with some hidden bombs and the goal is to open/clean all the squares without a bomb and if the player hits a bomb, then s/he loses the game. If the player can open all the squares without a bomb, then s/he wins the game!
+Minesweeper is a single player game. In this game we have a field (grid with squares) with hidden bombs and the goal is to open/clean all the squares without a bomb and if the player hits a bomb, then s/he loses the game. If the player can open all the squares without a bomb, then s/he wins the game!
 
 # Installation
 
-The game can be played both in IDE or in console.
+The game can be played both in IDE or console.
+
+**IDE**
 
 Here is what you need to do to set up the project:
-1. 
+1. Clone or download .zip file from https://github.com/Loilei/minesweeper-java.git
+2. Open the project using any Java-friendly IDE
+3. Go to src/main/java/com.marcela/Main.java
+4. Run main method in Main.java class
+
+**CONSOLE**
+
+
+
+# How to play
+The win condition is to reveal all tiles that do not contain bomb.
+
+The tile types are as follows:
+- '[X]' - tile with exploded bomb
+- '[_]' - unrevealed tile
+- '[F]' - flagged tile (marked bomb)
+- '[3]' - safe tile with the amount of neighbour bombs 
+
+The board size can be chosen by the user from range 5 to 10.
+Board bigger or smaller than the given range will not be generated.
+
+To play the game simply follow the instructions displayed in terminal.
+Until you hit the bomb or reveal the whole board, the game will keep asking for coordinates and action on chosen tile.
+
+If you hit the bomb the game will restart using the same bomb placement.
+
+If you win the game will ask you if you wish to play again, but the board will be generated randomly again.
+
+At any time when inputting coordinates or action you can type '**quit**' and the game will be terminated.

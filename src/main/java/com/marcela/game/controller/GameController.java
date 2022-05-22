@@ -157,7 +157,10 @@ public class GameController {
         String action = "";
         view.printMessage("\nPress R to reveal the tile. Press F to place or remove a flag.");
         do {
-            action = inputScanner.getActionStringInput().toUpperCase();
+            action = inputScanner.getActionStringInput();
+            if(action.equals("QUIT")) {
+                ScreenMaintenance.quitGame();
+            }
             if (!isActionValid(action)) {
                 view.printMessage("Action is not valid. Choose a valid action [R/F]: ");
             }
@@ -181,6 +184,9 @@ public class GameController {
         view.printMessage("\nChoose a coordinates of a tile to reveal it or place a flag (example: B3): ");
         do {
             chosenCoordinates = inputScanner.getStringInput();
+            if(chosenCoordinates.equals("QUIT")) {
+                ScreenMaintenance.quitGame();
+            }
             if (!areCoordinatesValid(chosenCoordinates)) {
                 view.printMessage("Coordinates are not valid");
             }
